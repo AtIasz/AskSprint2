@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Make A New Question";
+}
+<h1>@ViewData["Title"]</h1>
+@using (Html.BeginForm("AddQuestion", "Questions", FormMethod.Post))
+{
+    <input type="text" name="Title" id="Title" />
+    <input type="text" name="Message" id="Message" />
+    <input type="submit" value="Submit" />
+}
+
+
+

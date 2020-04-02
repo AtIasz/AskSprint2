@@ -1,0 +1,25 @@
+﻿@model AskSprint1_1.Question
+@{
+    ViewData["Title"] = "Question";
+}
+<h1>@Model.Title</h1>
+<h2>Message: @Model.Message</h2>
+<input type="button" value="Delete DIS" onclick="location.href='@Url.Action("Delete", "Questions",new { id = Model.ID })'" />
+<input type="button" value="Answer" onclick="location.href='@Url.Action("Answer", "Questions", new {id = Model.ID })'" />
+<br />
+<br />
+
+@if (Model.Answers.Count > 0)
+{
+    <h3>Answers so far:</h3>
+    @foreach (var a in Model.Answers)
+    {
+        <ul>
+            <li>@a </li>
+
+            <input type="button" value="Remove Answer" onclick="location.href =
+        '@Url.Action("DeleteThisAnswer", "Questions", new {answer = a,ID = Model.ID})'" />
+
+        </ul>
+    }
+}

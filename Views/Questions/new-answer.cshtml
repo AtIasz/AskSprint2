@@ -1,0 +1,10 @@
+﻿@model Question
+@{
+    ViewData["Title"] = Model.Title;
+}
+<h1>@ViewData["Title"]</h1>
+@using (Html.BeginForm("Add1Answer", "Questions", new { id = Model.ID }))
+{
+    <input type="text" name="answer" id="answer" />
+    <input type="submit" value="Submit" />
+}
