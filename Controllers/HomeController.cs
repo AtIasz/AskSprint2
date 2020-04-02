@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AskSprint1_1.Models;
+using Npgsql;
 
 namespace AskSprint1_1.Controllers
 {
@@ -20,6 +21,18 @@ namespace AskSprint1_1.Controllers
 
         public IActionResult Index()
         {
+            var connString = "Host=localhost;Username=postgres;Password=admin;Database=test2";
+            var conn = new NpgsqlConnection(connString);
+            using (var cmd = new NpgsqlCommand("SELECT * from fridge", conn))
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                while (reader.NextResult())
+                {
+                    var fridgeId = reader["fridge_id"];
+                    var fridgeName = reader["fridge_name"];
+                }
+            }
             return View();
         }
 
