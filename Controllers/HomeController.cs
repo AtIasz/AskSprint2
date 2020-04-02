@@ -21,7 +21,7 @@ namespace AskSprint1_1.Controllers
 
         public IActionResult Index()
         {
-            var connString = "Host=localhost;Username=postgres;Password=admin;Database=test2";
+            var connString = "Host=localhost;Username=postgres;Password=12345;Database=askmate";
             var conn = new NpgsqlConnection(connString);
             using (var cmd = new NpgsqlCommand("SELECT * from fridge", conn))
             {
