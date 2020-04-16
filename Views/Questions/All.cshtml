@@ -7,13 +7,15 @@
     <a class="nav-link text-dark" asp-area="" asp-controller="Questions" asp-action="Add">Add A Question</a>
 </h2>
 <ul>
-    @foreach (var q in Model)
+    @for (int i = 0; i < Model.Count; i++)
     {
-    <li>
-        <h3>
-            <a class="nav-link text-dark" asp-area="" asp-controller="Questions" asp-action="Get" asp-route-id="@q.ID">@q.Title</a>
-        </h3>
-        
-    </li>
+        <li>
+            <h3>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Questions" asp-action="Get" asp-route-id="@Model[i].ID">@Model[i].Title</a>
+            </h3>
+
+        </li>
     }
+
+
 </ul>

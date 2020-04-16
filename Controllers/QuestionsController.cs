@@ -9,6 +9,7 @@ using AskSprint1_1.Models;
 using AskSprint1_1.Services;
 using System.Web;
 using System.Net;
+using Npgsql;
 
 namespace AskSprint1_1.Controllers
 {
@@ -16,7 +17,8 @@ namespace AskSprint1_1.Controllers
     {
         private readonly ILogger<QuestionsController> _logger;
         private readonly IQuestionsService _questionsService;
-
+        string posgresUsername = Environment.GetEnvironmentVariable("postgresUsername");
+        string posgresPW = Environment.GetEnvironmentVariable("postgresPassword");
         public QuestionsController(ILogger<QuestionsController> logger, IQuestionsService questionService)
         {
             _questionsService = questionService;
@@ -25,6 +27,22 @@ namespace AskSprint1_1.Controllers
         [HttpGet]
         public IActionResult All()
         {
+            var connString = $"Host=localhost;Username={posgresUsername};Password={posgresPW};Database=askmate";
+            var conn = new NpgsqlConnection(connString);
+            using (var cmd = new NpgsqlCommand("select * from question", conn))
+            {
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                while (reader.NextResult())
+                {
+                    var questionID = reader["question_id"];
+                    var question_title = reader["questions_title"];
+                    
+                }
+                conn.Close();
+            }
+        
+
             var questions = _questionsService.GetAll();
             return View(questions);
         }
@@ -36,12 +54,15 @@ namespace AskSprint1_1.Controllers
         
         public IActionResult AddQuestion(string Title, string Message)
         {
+
             var question = _questionsService.AddOne(Title, Message);
+
             return RedirectToAction("Get", new { id = _questionsService.GetId() });
             
         }
         public IActionResult Add()
         {
+
             return View("Add");
         }
         public IActionResult Delete(int id)

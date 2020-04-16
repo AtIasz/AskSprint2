@@ -12,6 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "postgresUsername": "postgres",
+        "postgresPassword": "8975kz9t",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

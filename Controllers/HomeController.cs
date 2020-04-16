@@ -21,27 +21,52 @@ namespace AskSprint1_1.Controllers
 
         public IActionResult Index()
         {
-            var connString = "Host=localhost;Username=postgres;Password=12345;Database=askmate";
-            var conn = new NpgsqlConnection(connString);
-            using (var cmd = new NpgsqlCommand("SELECT * from fridge", conn))
+            
+            //var conn = new NpgsqlConnection(connString);
+            
+            //conn.Close();
+            return View();
+        }
+
+        public IActionResult Login()
+        {
+
+            return View();
+        }
+        public IActionResult LoginLab(string _username,string _password)
+        {
+            string connstring = string.Format("Server={0};Port={1};" +
+                "User Id={2};Password={3};Database={4};",
+                "localhost", "5432", "postgres", "8975kz9t", "askmate");
+            NpgsqlConnection conn = new NpgsqlConnection(connstring);
+            NpgsqlCommand cmd;
+            string sql;
+            try
             {
                 conn.Open();
-                var reader = cmd.ExecuteReader();
-                while (reader.NextResult())
+                sql = @"select * from u_login(:_username,:_password)";
+                cmd = new NpgsqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("_username",_username);
+                cmd.Parameters.AddWithValue("_password",_password);
+                int result = (int)cmd.ExecuteScalar();
+                conn.Close();
+                if (result==1)
                 {
-                    var fridgeId = reader["fridge_id"];
-                    var fridgeName = reader["fridge_name"];
+                    return Redirect("/Questions/All");
+                }
+                else
+                {
+                    return View();
                 }
             }
-            return View();
+            catch (Exception ex)
+            {
+                conn.Close();
+                throw new Exception("Something went wrong."+ex);
+            }
+            
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
